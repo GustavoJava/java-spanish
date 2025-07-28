@@ -17,12 +17,24 @@ public class CategoryRestController {
 	@Autowired
 	private ICategoryService service;
 
+	/**
+	 * listar todas categorias
+	 * 
+	 * @return lista de categorias
+	 * 
+	 * */
 	@GetMapping("/categories")
 	public ResponseEntity<CategoryResponseRest> searchCategories(){
 		ResponseEntity<CategoryResponseRest> response = service.search();
 		return response;
 	}
 	
+	/**
+	 * obtem categoria por id
+	 * 
+	 * @return categoria
+	 * 
+	 * */
 	@GetMapping("/categories/{id}")
 	public ResponseEntity<CategoryResponseRest> searchCategoriesById(@PathVariable(name="id") Long id){
 		ResponseEntity<CategoryResponseRest> response = service.searchById(id);
