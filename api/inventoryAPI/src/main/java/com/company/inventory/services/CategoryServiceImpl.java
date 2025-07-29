@@ -2,6 +2,8 @@ package com.company.inventory.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,34 @@ public class CategoryServiceImpl implements ICategoryService {
 
 		} catch (Exception e) {
 			response.setMetadata("Erro", "-1", "erro consultar por id");
+			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<CategoryResponseRest> save(Category category) {
+		
+		CategoryResponseRest response = new CategoryResponseRest();
+		List<Category> list = new ArrayList<>();
+
+		try {
+
+			Category categorySaved = categoryDao.save(category);
+
+			if (Objects.nonNull(categorySaved)) {
+				list.add(categorySaved);
+				response.getCategoryResponse().setCategory(list);
+				response.setMetadata("criado", "00", "categoria criada com sucesso!");
+			} else {
+				response.setMetadata("não criado", "-1", "categoria não criada");
+				return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.BAD_REQUEST);
+			}
+
+		} catch (Exception e) {
+			response.setMetadata("Erro", "-1", "erro gravar categoria");
 			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
