@@ -3,7 +3,6 @@ package com.company.inventory.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +91,63 @@ public class CategoryServiceImpl implements ICategoryService {
 
 		} catch (Exception e) {
 			response.setMetadata("Erro", "-1", "erro gravar categoria");
+			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<CategoryResponseRest> update(Category category, Long id) {
+		CategoryResponseRest response = new CategoryResponseRest();
+		List<Category> list = new ArrayList<>();
+
+		try {
+
+			Optional<Category> categorySearch = categoryDao.findById(id);
+
+			if (categorySearch.isPresent()) {
+				categorySearch.get().setName(category.getName());
+				categorySearch.get().setDescription(category.getDescription());
+					
+				Category categoryUpdated = categoryDao.save(categorySearch.get()); 
+			
+				if (Objects.nonNull(categoryUpdated)) {
+					list.add(categoryUpdated);
+					response.getCategoryResponse().setCategory(list);
+					response.setMetadata("atualizada", "00", "categoria atualizada com sucesso!");
+
+				} else {
+					response.setMetadata("não atualizado", "-1", "categoria não atualizada");
+					return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				response.setMetadata("não encontrada", "-1", "categoria não encontrada");
+				return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.NOT_FOUND);
+			}
+
+		} catch (Exception e) {
+			response.setMetadata("Erro", "-1", "erro atualizar categoria");
+			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<CategoryResponseRest> deleteById(Long id) {
+		
+		CategoryResponseRest response = new CategoryResponseRest();
+
+		try {
+			categoryDao.deleteById(id);
+			response.setMetadata("resposta OK", "00", "categoria eliminada");
+
+
+		} catch (Exception e) {
+			response.setMetadata("Erro", "-1", "erro ao eliminar");
 			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
