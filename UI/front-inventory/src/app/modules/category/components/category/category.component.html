@@ -22,7 +22,7 @@
   <div mat-card-image></div>
 
   <mat-card-content>
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table [dataSource]="dataSource" >
 
       <!--Id-->
       <ng-container matColumnDef="id">
@@ -58,9 +58,11 @@
       <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayColumns "></tr>
 
-
-
     </table>
+
+   <mat-paginator [pageSizeOptions]="[2, 5, 10, 20]"
+                  showFirstLastButtons>
+  </mat-paginator>
   </mat-card-content>
 
   </mat-card>

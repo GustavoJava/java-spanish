@@ -1,18 +1,20 @@
-import { MatTableDataSource } from '@angular/material/table';
-import { CategoryService } from './../../../shared/services/category.service';
 import { Component, inject, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+
+import { CategoryService } from './../../../shared/services/category.service';
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css']
 })
-export class CategoryComponent implements OnInit{
+export class CategoryComponent implements OnInit {
 
   private categoryService = inject(CategoryService);
 
   displayColumns: string[] = ['id','name','description','actions'];
   dataSource = new MatTableDataSource<CategoryElement>();
+
 
   ngOnInit(): void {
     this.getCategories();
