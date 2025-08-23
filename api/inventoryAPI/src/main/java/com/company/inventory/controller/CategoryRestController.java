@@ -62,7 +62,7 @@ public class CategoryRestController {
 	}
 	
 	/**
-	 * atualiza uma nova categoria
+	 * atualiza uma nova categoria.
 	 * 
 	 * @return categoria
 	 * 
