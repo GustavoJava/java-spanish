@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { CategoryService } from './../../../shared/services/category.service';
 
@@ -15,6 +15,9 @@ export class NewCategoryComponent implements OnInit {
   private fb = inject(FormBuilder);
   private categoryService = inject(CategoryService);
   private dialogRef = inject(MatDialogRef<NewCategoryComponent>);
+  public data = inject(MAT_DIALOG_DATA);
+
+  estadoFormulario = "Adicionar";
 
   ngOnInit(): void {
     this.initForm();
@@ -25,6 +28,12 @@ export class NewCategoryComponent implements OnInit {
       name: ['',Validators.required],
       description: ['',Validators.required]
     });
+
+    if(this.data){
+      this.updateForm(this.data);
+      this.estadoFormulario = "Atualizar";
+    }
+
   }
 
   onSave() {
@@ -34,12 +43,21 @@ export class NewCategoryComponent implements OnInit {
       description: this.categoryForm.get('description')?.value,
     }
 
-    this.categoryService.saveCategorie(data).subscribe((data)=>{
-      console.log(data);
+    if(this.data){
+        this.categoryService.updateCategorie(data, this.data.id).subscribe((data: any)=>{
+          console.log('data ',data);
+          this.dialogRef.close(1);;
+        }),(error: any)=>{
+          console.log(error);
+          this.dialogRef.close(2);
+        }
+    } else {
+      this.categoryService.saveCategorie(data).subscribe((data)=>{
       this.dialogRef.close(1);
     }),(error: any)=>{
       console.log(error);
       this.dialogRef.close(2);
+    }
     }
 
   }
@@ -48,4 +66,16 @@ export class NewCategoryComponent implements OnInit {
       this.dialogRef.close(3);
   }
 
+
+  updateForm(data: any) {
+      this.categoryForm = this.fb.group({
+      name: [data.name,Validators.required],
+      description: [data.description,Validators.required]
+    });
+    console.log('update ',this.categoryForm.value);
+
+  }
+
 }
+
+
