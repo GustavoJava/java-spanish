@@ -1,7 +1,8 @@
-import { CategoryService } from './../../../shared/services/category.service';
-import { Component, inject, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+
+import { CategoryService } from './../../../shared/services/category.service';
 
 @Component({
   selector: 'app-new-category',
