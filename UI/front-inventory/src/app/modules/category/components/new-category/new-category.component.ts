@@ -40,7 +40,7 @@ export class NewCategoryComponent implements OnInit {
 
     let data = {
       name: this.categoryForm.get('name')?.value,
-      description: this.categoryForm.get('description')?.value,
+      description: this.categoryForm.get('description')?.value
     }
 
     if(this.data){
