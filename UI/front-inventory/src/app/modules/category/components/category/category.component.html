@@ -12,7 +12,10 @@
     <div class="right">
       <ul>
         <li>
-          <button  mat-raised-button color="primary" (click)="openCategoryDialog()">Adicionar categoria</button>
+          <button  mat-raised-button color="primary" (click)="openCategoryDialog()">
+            Adicionar categoria
+            <mat-icon>add</mat-icon>
+          </button>
         </li>
       </ul>
     </div>
@@ -49,7 +52,7 @@
               <button mat-icon-button color="primary" (click)="edit(element.id,element.name,element.description)">
                   <mat-icon aria-label="Edit">edit</mat-icon>
               </button>
-              <button mat-icon-button color="accent" (click)="eliminar(element.id)">
+              <button mat-icon-button color="accent" (click)="eliminar(element)">
                   <mat-icon aria-label="Delete">delete</mat-icon>
               </button>
           </td>

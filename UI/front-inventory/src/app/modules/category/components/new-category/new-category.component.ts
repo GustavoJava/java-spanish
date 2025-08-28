@@ -25,8 +25,8 @@ export class NewCategoryComponent implements OnInit {
 
   initForm(){
     this.categoryForm = this.fb.group({
-      name: ['',Validators.required],
-      description: ['',Validators.required]
+      name: ['',[Validators.required, Validators.minLength(5)]],
+      description: ['',[Validators.required, Validators.minLength(5)]],
     });
 
     if(this.data){
@@ -63,17 +63,14 @@ export class NewCategoryComponent implements OnInit {
   }
 
   onCancel() {
-      this.dialogRef.close(3);
+    this.dialogRef.close(3);
   }
 
-
   updateForm(data: any) {
-      this.categoryForm = this.fb.group({
-      name: [data.name,Validators.required],
-      description: [data.description,Validators.required]
+    this.categoryForm = this.fb.group({
+      name: [data.name, [Validators.required, Validators.minLength(5)]],
+      description: [data.description, [Validators.required, Validators.minLength(5)]],
     });
-    console.log('update ',this.categoryForm.value);
-
   }
 
 }

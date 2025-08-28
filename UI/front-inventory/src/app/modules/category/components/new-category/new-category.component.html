@@ -5,21 +5,33 @@
       <mat-form-field>
         <mat-label>Nome</mat-label>
         <input matInput formControlName="name" required/>
+         <mat-error  *ngIf="categoryForm.get('name')?.hasError('required')">
+          O nome é obrigatório.
+        </mat-error>
+         <mat-error *ngIf="categoryForm.get('name')?.hasError('minlength')">
+          O nome deve ter no mínimo 5 caracteres.
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Descrição</mat-label>
         <textarea matInput formControlName="description" required></textarea>
+        <mat-error *ngIf="categoryForm.get('description')?.hasError('required')">
+          A descrição é obrigatório.
+        </mat-error>
+         <mat-error *ngIf="categoryForm.get('description')?.hasError('minlength')">
+          O descrição deve ter no mínimo 5 caracteres.
+        </mat-error>
       </mat-form-field>
     </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-     <button mat-button color="primary" (click)="onSave()" [disabled]="categoryForm.invalid">
+     <button mat-raised-button color="primary" (click)="onSave()" [disabled]="categoryForm.invalid">
         <mat-icon>save</mat-icon>Salvar
       </button>
 
-      <button mat-button color="primary" (click)="onCancel()">
+      <button mat-raised-button (click)="onCancel()">
         <mat-icon>cancel</mat-icon>Cancelar
       </button>
 </mat-dialog-actions>

@@ -1,11 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-
-import { CategoryService } from './../../../shared/services/category.service';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { NewCategoryComponent } from '../new-category/new-category.component';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
+
+import { NewCategoryComponent } from '../new-category/new-category.component';
+import { CategoryService } from './../../../shared/services/category.service';
 
 @Component({
   selector: 'app-category',
@@ -20,6 +21,7 @@ export class CategoryComponent implements OnInit {
 
   displayColumns: string[] = ['id','name','description','actions'];
   dataSource = new MatTableDataSource<CategoryElement>();
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
     this.getCategories();
@@ -37,7 +39,7 @@ export class CategoryComponent implements OnInit {
     if(resp.metadata[0].code == "00"){
       let listCategory = resp.categoryResponse.category;
       this.dataSource = new MatTableDataSource<CategoryElement>(listCategory);
-      console.log(this.dataSource.data);
+      this.dataSource.paginator = this.paginator;
     }
   }
 
@@ -83,10 +85,10 @@ export class CategoryComponent implements OnInit {
 
   }
 
-  eliminar(id: any) {
+  eliminar(element: CategoryElement) {
     const dialogRef = this.dialog.open(ConfirmComponent, {
     width: '350px',
-    data:{id: id}
+    data:{name: element.name}
    });
 
     dialogRef.afterClosed().subscribe(result => {
