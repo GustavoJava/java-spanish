@@ -30,7 +30,7 @@ export class NewCategoryComponent implements OnInit {
     });
 
     if(this.data){
-      this.updateForm(this.data);
+      this.categoryForm.patchValue(this.data);
       this.estadoFormulario = "Atualizar";
     }
 
@@ -66,12 +66,13 @@ export class NewCategoryComponent implements OnInit {
     this.dialogRef.close(3);
   }
 
-  updateForm(data: any) {
-    this.categoryForm = this.fb.group({
-      name: [data.name, [Validators.required, Validators.minLength(5)]],
-      description: [data.description, [Validators.required, Validators.minLength(5)]],
-    });
-  }
+  // updateForm(data: any) {
+  //   this.categoryForm = this.fb.group({
+  //     name: [data.name, [Validators.required, Validators.minLength(5)]],
+  //     description: [data.description, [Validators.required, Validators.minLength(5)]],
+  //   });
+
+  // }
 
 }
 

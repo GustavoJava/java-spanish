@@ -67,10 +67,10 @@ export class CategoryComponent implements OnInit {
       })
   }
 
-  edit(id: any,name: string,description: string) {
+  edit(element: CategoryElement) {
     const dialogRef = this.dialog.open(NewCategoryComponent, {
     width: '350px',
-    data:{id: id,name: name,description: description}
+    data: element
    });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -88,7 +88,7 @@ export class CategoryComponent implements OnInit {
   eliminar(element: CategoryElement) {
     const dialogRef = this.dialog.open(ConfirmComponent, {
     width: '350px',
-    data:{name: element.name}
+    data: element
    });
 
     dialogRef.afterClosed().subscribe(result => {
