@@ -15,6 +15,7 @@ import { CategoryService } from './../../../shared/services/category.service';
 })
 export class CategoryComponent implements OnInit {
 
+
   private categoryService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
   public dialog = inject(MatDialog);
@@ -100,6 +101,17 @@ export class CategoryComponent implements OnInit {
       }
 
     });
+  }
+
+  buscar(busca: string) {
+
+    if(!busca){
+      return this.getCategories();
+    }
+
+    this.categoryService.getCategorieById(busca).subscribe(response =>{
+      this.processesCategoriesResponse(response)
+    })
   }
 
 }

@@ -33,4 +33,9 @@ export class CategoryService {
        return this.http.delete(this.endpoint);
   }
 
+  getCategorieById(id: any){
+       this.endpoint = `${this.base_url}/categories/${id}`;
+       return this.http.get(this.endpoint);
+  }
+
 }
