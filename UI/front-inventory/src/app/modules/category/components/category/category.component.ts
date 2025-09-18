@@ -1,10 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-
-import { CategoryService } from './../../../shared/services/category.service';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { NewCategoryComponent } from '../new-category/new-category.component';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
+import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
+
+import { NewCategoryComponent } from '../new-category/new-category.component';
+import { CategoryService } from './../../../shared/services/category.service';
 
 @Component({
   selector: 'app-category',
@@ -13,12 +15,14 @@ import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/s
 })
 export class CategoryComponent implements OnInit {
 
+
   private categoryService = inject(CategoryService);
   private snackBar = inject(MatSnackBar);
   public dialog = inject(MatDialog);
 
   displayColumns: string[] = ['id','name','description','actions'];
   dataSource = new MatTableDataSource<CategoryElement>();
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
     this.getCategories();
@@ -36,7 +40,7 @@ export class CategoryComponent implements OnInit {
     if(resp.metadata[0].code == "00"){
       let listCategory = resp.categoryResponse.category;
       this.dataSource = new MatTableDataSource<CategoryElement>(listCategory);
-      console.log(this.dataSource.data);
+      this.dataSource.paginator = this.paginator;
     }
   }
 
@@ -62,6 +66,61 @@ export class CategoryComponent implements OnInit {
         duration: 2500,
         verticalPosition: 'top'
       })
+  }
+
+  edit(element: CategoryElement) {
+    const dialogRef = this.dialog.open(NewCategoryComponent, {
+    width: '350px',
+    data: element
+   });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == 1){
+         this.openSnackBar("Categoria atualizada","Sucesso");
+         this.getCategories();
+      } else if(result == 2){
+         this.openSnackBar("Erro ao atualizar Categoria","Erro");
+      }
+
+    });
+
+  }
+
+  eliminar(element: CategoryElement) {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+    width: '350px',
+    data: element
+   });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == 1){
+         this.openSnackBar("Categoria eliminada!","Sucesso");
+         this.getCategories();
+      } else if(result == 2){
+         this.openSnackBar("Erro ao atualizar Categoria","Erro");
+      }
+
+    });
+  }
+
+  buscar(busca: string) {
+
+    if(!busca){
+      return this.getCategories();
+    }
+
+    this.categoryService.getCategorieById(busca).subscribe(response =>{
+      this.processesCategoriesResponse(response)
+    })
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 }

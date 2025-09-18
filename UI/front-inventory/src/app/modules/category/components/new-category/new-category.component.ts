@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { CategoryService } from './../../../shared/services/category.service';
 
@@ -15,6 +15,9 @@ export class NewCategoryComponent implements OnInit {
   private fb = inject(FormBuilder);
   private categoryService = inject(CategoryService);
   private dialogRef = inject(MatDialogRef<NewCategoryComponent>);
+  public data = inject(MAT_DIALOG_DATA);
+
+  estadoFormulario = "Adicionar";
 
   ngOnInit(): void {
     this.initForm();
@@ -22,30 +25,55 @@ export class NewCategoryComponent implements OnInit {
 
   initForm(){
     this.categoryForm = this.fb.group({
-      name: ['',Validators.required],
-      description: ['',Validators.required]
+      name: ['',[Validators.required, Validators.minLength(5)]],
+      description: ['',[Validators.required, Validators.minLength(5)]],
     });
+
+    if(this.data){
+      this.categoryForm.patchValue(this.data);
+      this.estadoFormulario = "Atualizar";
+    }
+
   }
 
   onSave() {
 
     let data = {
       name: this.categoryForm.get('name')?.value,
-      description: this.categoryForm.get('description')?.value,
+      description: this.categoryForm.get('description')?.value
     }
 
-    this.categoryService.saveCategorie(data).subscribe((data)=>{
-      console.log(data);
+    if(this.data){
+        this.categoryService.updateCategorie(data, this.data.id).subscribe((data: any)=>{
+          console.log('data ',data);
+          this.dialogRef.close(1);;
+        }),(error: any)=>{
+          console.log(error);
+          this.dialogRef.close(2);
+        }
+    } else {
+      this.categoryService.saveCategorie(data).subscribe((data)=>{
       this.dialogRef.close(1);
     }),(error: any)=>{
       console.log(error);
       this.dialogRef.close(2);
     }
+    }
 
   }
 
   onCancel() {
-      this.dialogRef.close(3);
+    this.dialogRef.close(3);
   }
 
+  // updateForm(data: any) {
+  //   this.categoryForm = this.fb.group({
+  //     name: [data.name, [Validators.required, Validators.minLength(5)]],
+  //     description: [data.description, [Validators.required, Validators.minLength(5)]],
+  //   });
+
+  // }
+
 }
+
+
