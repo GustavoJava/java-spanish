@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Confirmação</h1>
+<div mat-dialog-content>
+  <p>Deseja eliminar o registro {{data.name}} ?</p>
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button color="warn" (click)="onNoClick()" cdkFocusInitial>Não</button>
+  <button mat-raised-button color="primary"  (click)="delete()">Sim</button>
+</div>
