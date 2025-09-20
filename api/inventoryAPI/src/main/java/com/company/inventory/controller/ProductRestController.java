@@ -3,7 +3,7 @@ package com.company.inventory.controller;
 import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +31,7 @@ public class ProductRestController {
 
 
 	/**
+	 * save product 
 	 * 
 	 * @param picture
 	 * @param name
@@ -60,6 +61,7 @@ public class ProductRestController {
 	}
 	
 	/**
+	  * search by Id with PathVariable
 	 * 
 	 * @param id
 	 * @return
@@ -71,6 +73,7 @@ public class ProductRestController {
 	}
 	
 	/**
+	 * search by name with PathVariable
 	 * 
 	 * @param name
 	 * @return
@@ -82,6 +85,7 @@ public class ProductRestController {
 	}
 	
 	/**
+	 * search by name with RequestParam
 	 * 
 	 * @param name
 	 * @return
@@ -91,5 +95,12 @@ public class ProductRestController {
 		ResponseEntity<ProductResponseRest> response = this.iProductService.searchByName(name);
 		return response;
     }
+	
+	@DeleteMapping("/products/{id}")
+	public ResponseEntity<ProductResponseRest> delete(@PathVariable Long id){
+		ResponseEntity<ProductResponseRest> response = this.iProductService.deleteById(id);
+		return response;
+	}
+	
 	
 }
