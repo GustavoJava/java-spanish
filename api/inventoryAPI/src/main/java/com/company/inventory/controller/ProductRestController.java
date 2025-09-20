@@ -102,5 +102,15 @@ public class ProductRestController {
 		return response;
 	}
 	
+	/**
+	 * search all products
+	 * 
+	 * @return
+	 */
+	@GetMapping("/products/")
+	public ResponseEntity<ProductResponseRest> search(){
+		ResponseEntity<ProductResponseRest> response = this.iProductService.search();
+		return response;
+	}
 	
 }
