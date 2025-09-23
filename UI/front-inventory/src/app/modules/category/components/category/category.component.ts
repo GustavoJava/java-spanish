@@ -88,7 +88,7 @@ export class CategoryComponent implements OnInit {
 
   eliminar(element: CategoryElement) {
     const dialogRef = this.dialog.open(ConfirmComponent, {
-    width: '350px',
+    width: '360px',
     data: element
    });
 
