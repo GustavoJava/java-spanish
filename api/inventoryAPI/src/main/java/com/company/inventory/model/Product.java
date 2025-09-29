@@ -2,7 +2,7 @@ package com.company.inventory.model;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -21,7 +21,10 @@ import lombok.Data;
 @Table(name = "product")
 public class Product implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7461389651533509262L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,14 +36,14 @@ public class Product implements Serializable {
 	
 	private int account;
 	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	//@JsonIgnoreProperties({"hibernateInitializer","handler"})
+	@ManyToOne(fetch= FetchType.LAZY)
+	@JsonIgnoreProperties ( {"hibernateLazyInitializer", "handler"})
 	private Category category;
 	
 	@Lob
-	@Basic(fetch =  FetchType.LAZY)
-	@Column(name = "picture", columnDefinition = "longblob")
+	@Basic(fetch = FetchType.LAZY)
+	@Column( name ="picture", columnDefinition = "longblob")
 	private byte[] picture;
+	
 
 }
