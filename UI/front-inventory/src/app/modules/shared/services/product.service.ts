@@ -16,4 +16,10 @@ export class ProductService {
     this.endpoint = `${this.base_url}/products`;
     return this.http.get(this.endpoint);
   }
+
+  saveProducts(body: any){
+    this.endpoint = `${this.base_url}/products`;
+    return this.http.post(this.endpoint, body);
+  }
+
 }

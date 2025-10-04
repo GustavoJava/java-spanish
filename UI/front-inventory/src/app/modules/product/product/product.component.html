@@ -13,7 +13,7 @@
     <div class="right">
       <ul>
         <li>
-          <button  mat-raised-button color="primary">
+          <button  mat-raised-button color="primary" (click)="openProductDialog()">
             Adicionar produto
             <mat-icon>add</mat-icon>
           </button>
@@ -84,7 +84,7 @@
 
     </table>
 
-   <mat-paginator [pageSizeOptions]="[2, 5, 10, 20]"
+   <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                   showFirstLastButtons>
   </mat-paginator>
   </mat-card-content>
