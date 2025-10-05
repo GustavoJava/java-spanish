@@ -160,39 +160,45 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
+	@Transactional (readOnly = true)
 	public ResponseEntity<ProductResponseRest> search() {
-
 		ProductResponseRest response = new ProductResponseRest();
 		List<Product> list = new ArrayList<>();
 		List<Product> listAux = new ArrayList<>();
-
+		
 		try {
-
-			listAux = (List<Product>) this.productDao.findAll();
-
+			
+			//search producto
+			listAux = (List<Product>) productDao.findAll();
+			
+			
 			if (!listAux.isEmpty()) {
-
-				listAux.stream().forEach(p -> {
-					byte[] imgDescompressed = Util.decompressZLib(p.getPicture());
-					p.setPicture(imgDescompressed);
+				
+				listAux.stream().forEach( (p) -> {
+					byte[] imageDescompressed = Util.decompressZLib(p.getPicture());
+					p.setPicture(imageDescompressed);
 					list.add(p);
 				});
-
-				// list.addAll(listAux);
+				
+				
 				response.getProductResponse().setProducts(list);
-				response.setMetadata("resposta ok", "00", "produtos encontrados!");
-				return new ResponseEntity<ProductResponseRest>(response, HttpStatus.OK);
+				response.setMetadata("Respuesta ok", "00", "Productos encontrados");
+				
 			} else {
-				response.setMetadata("resposta nok", "-1", "produtos não encontrados!");
+				response.setMetadata("respuesta nok", "-1", "Productos no encontrados ");
 				return new ResponseEntity<ProductResponseRest>(response, HttpStatus.NOT_FOUND);
 			}
-
+			
+			
 		} catch (Exception e) {
-			response.setMetadata("resposta nok", "-1", "erro ao buscar produto!");
+			e.getStackTrace();
+			response.setMetadata("respuesta nok", "-1", "Error al buscar productos");
 			return new ResponseEntity<ProductResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
 
+		}
+		
+		return new ResponseEntity<ProductResponseRest>(response, HttpStatus.OK);
+	}
 	@Override
 	@Transactional
 	public ResponseEntity<ProductResponseRest> update(Product product, Long categoryId, Long id) {
