@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{estadoFormulario}} novo Produto</h2>
+<h2 mat-dialog-title>{{estadoFormulario}}</h2>
 <mat-dialog-content>
   <form [formGroup]="productForm">
     <div class="product-container">
@@ -59,12 +59,15 @@
       <input hidden type="file"
              #fileInput formControlName="picture"
              (change)="onfileChange($event)">
+        <mat-error *ngIf="!selectedFile">
+          A imagem é obrigatória.
+        </mat-error>
       </div>
     </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-     <button mat-raised-button color="primary" (click)="onSave()" [disabled]="productForm.invalid">
+     <button mat-raised-button color="primary" (click)="onSave()" [disabled]="productForm.invalid || !selectedFile">
         <mat-icon>save</mat-icon>Salvar
       </button>
       <button mat-raised-button (click)="onCancel()">

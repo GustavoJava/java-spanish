@@ -7,6 +7,7 @@ import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/conf
 
 import { NewCategoryComponent } from '../new-category/new-category.component';
 import { CategoryService } from './../../../shared/services/category.service';
+import { EnumModules } from 'src/app/modules/shared/enums/enum-modules';
 
 @Component({
   selector: 'app-category',
@@ -89,7 +90,7 @@ export class CategoryComponent implements OnInit {
   eliminar(element: CategoryElement) {
     const dialogRef = this.dialog.open(ConfirmComponent, {
     width: '360px',
-    data: element
+    data: {...element, module: EnumModules.CATEGORY}
    });
 
     dialogRef.afterClosed().subscribe(result => {
