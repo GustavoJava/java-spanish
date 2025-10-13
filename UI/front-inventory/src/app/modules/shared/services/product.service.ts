@@ -22,4 +22,14 @@ export class ProductService {
     return this.http.post(this.endpoint, body);
   }
 
+  updateProduct(body: any, id: any){
+      this.endpoint = `${this.base_url}/products/${id}`;
+      return this.http.put(this.endpoint, body);
+  }
+
+  deleteProduct(id: any){
+    this.endpoint = `${this.base_url}/products/${id}`;
+    return this.http.delete(this.endpoint);
+  }
+
 }
