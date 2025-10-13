@@ -25,7 +25,7 @@ export class NewProductComponent implements OnInit{
   private dialogRef = inject(MatDialogRef<NewProductComponent>);
   public data = inject(MAT_DIALOG_DATA);
 
-  estadoFormulario = "Adicionar";
+  estadoFormulario = "Adicionar Novo Produto";
   categories: Category[] = [];
   selectedFile: any;
   nameImg = '';
@@ -43,31 +43,60 @@ export class NewProductComponent implements OnInit{
       category: ['', Validators.required],
       picture: ['', Validators.required],
     });
+
+     if(this.data){
+      console.log('data ', this.data);
+
+      this.updateForm(this.data);
+      this.estadoFormulario = "Atualizar Produto";
+    }
+
+  }
+
+  updateForm(data: any){
+    this.productForm = this.fb.group({
+      name: [data.name,[Validators.required, Validators.minLength(5)]],
+      price: [data.price, Validators.required],
+      account: [data.account, Validators.required],
+      category:[data.category.id, Validators.required],
+      picture: ['', Validators.required]
+    });
+
   }
 
   onSave() {
 
-   const formValue = this.productForm.value;
-   const uploadData = new FormData();
+    const formValue = this.productForm.value;
+    const formData = new FormData();
 
-   uploadData.append('name', formValue.name);
-   uploadData.append('price', formValue.price);
-   uploadData.append('account', formValue.account);
-   uploadData.append('categoryId', formValue.category);
+    formData.append('name', formValue.name);
+    formData.append('price', formValue.price);
+    formData.append('account', formValue.account);
+    formData.append('categoryId', formValue.category);
 
-  const pictureFile: File = this.selectedFile;
+    const pictureFile: File = this.selectedFile;
 
-  if (pictureFile) {
-    uploadData.append('picture', pictureFile, pictureFile.name);
-  }
+    if (pictureFile) {
+      formData.append('picture', pictureFile, pictureFile.name);
+    }
 
-  this.productService.saveProducts(uploadData).subscribe((data) => {
-    console.log(data);
-    this.dialogRef.close(1);
-  }, (error: any) => {
-    console.log('error save ', error);
-    this.dialogRef.close(2);
-  });
+    if(this.data){
+      this.productService.updateProduct(formData, this.data.id).subscribe((data: any)=>{
+        this.dialogRef.close(1);
+      }, (error: any) => {
+        console.log('error update product', error);
+        this.dialogRef.close(2);
+      });
+
+      }else {
+      this.productService.saveProducts(formData).subscribe((data) => {
+        this.dialogRef.close(1);
+      }, (error: any) => {
+        console.log('error save product', error);
+        this.dialogRef.close(2);
+      });
+
+    }
 
   }
 
@@ -85,12 +114,11 @@ export class NewProductComponent implements OnInit{
   }
 
   onfileChange(event: any) {
-    // const file: File = event.target.files[0];
-    // if (file) {
-    //   this.nameImg = file.name;
-    // }
-    this.selectedFile = event.target.files[0];
-    this.nameImg = event.target.files[0].name;
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      this.nameImg = file.name;
+    }
   }
 
 }

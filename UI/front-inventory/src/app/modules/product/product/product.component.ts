@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewCategoryComponent } from '../../category/components/new-category/new-category.component';
 import { NewProductComponent } from '../new-product/new-product.component';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
+import { ConfirmComponent } from '../../shared/components/confirm/confirm.component';
+import { EnumModules } from '../../shared/enums/enum-modules';
 
 @Component({
   selector: 'app-product',
@@ -13,6 +15,7 @@ import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/s
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit{
+
 
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
@@ -49,13 +52,13 @@ throw new Error('Method not implemented.');
       let listCProduct = response.productResponse.products;
 
       listCProduct.forEach((element:ProductElement)  => {
-        element.category = element.category.name;
+        //element.category = element.category.name;
         element.picture = 'data:image/jpeg;base64,' + element.picture;
         dateProduct.push(element);
       });
+
       this.dataSource = new MatTableDataSource<ProductElement>(dateProduct);
       this.dataSource.paginator = this.paginator;
-      console.log(this.dataSource.data);
 
     }
 
@@ -86,7 +89,51 @@ throw new Error('Method not implemented.');
         })
   }
 
-}
+  edit(element: any) {
+    element.picture = 'data:image/jpeg;base64,' + element.picture;
+    const dialogRef = this.dialog.open(NewProductComponent, {
+     width: '400px',
+     height: '520px',
+    //  data: {
+    //         id: element.id,
+    //         name: element.name,
+    //         price: element.price,
+    //         category: element.category,
+    //         account: element.account,
+    //         picture: element.picture
+    //       }
+    data: { ...element}
+   });
+
+  dialogRef.afterClosed().subscribe(result => {
+      if(result == 1){
+        this.openSnackBar("Produto atualizado!","Sucesso");
+        this.getProducts();
+      } else if(result == 2){
+        this.openSnackBar("Erro ao atualizar Produto","Erro");
+      }
+
+    });
+
+  }
+
+  eliminar(element: ProductElement) {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      width: '360px',
+      data: {...element, module: EnumModules.PRODUCT}
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if(result == 1){
+            this.openSnackBar("Produto excluido!","Sucesso");
+            this.getProducts();
+        } else if(result == 2){
+            this.openSnackBar("Erro ao atualizar Produto","Erro");
+        }
+
+      });
+    }
+  }
 
 export interface ProductElement {
   id: number;
