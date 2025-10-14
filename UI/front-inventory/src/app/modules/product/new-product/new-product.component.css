@@ -17,3 +17,14 @@
   color: #fff;
   border: 0px solid #fff;;
 }
+
+.img-erro {
+  /* Propriedades existentes */
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: small;
+
+  /* 1. Faz o elemento ocupar toda a largura e centraliza o texto */
+  display: block;
+
+  margin-left: 21px;
+}

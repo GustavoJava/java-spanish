@@ -62,6 +62,13 @@
       <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayColumns "></tr>
 
+      <tr class="mat-row no-data-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayColumns.length">
+          Nenhuma categoria encontrada.
+        </td>
+      </tr>
+
+
     </table>
 
    <mat-paginator [pageSizeOptions]="[5, 10, 20]"

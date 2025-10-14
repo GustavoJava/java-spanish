@@ -24,3 +24,14 @@ mat-form-field{
   flex: 0 0 6%;
 }
 
+.no-data-row {
+  background-color: #f1f361; /* Cor de fundo amarela clara (como um aviso) */
+  font-weight: bold;
+  text-align: center;
+  color: #ee1628; /* Cor do texto escura (para contraste com o fundo) */
+}
+
+.no-data-row td {
+  text-align: center;
+  padding: 20px;
+}

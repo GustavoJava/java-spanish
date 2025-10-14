@@ -59,7 +59,7 @@
       <input hidden type="file"
              #fileInput formControlName="picture"
              (change)="onfileChange($event)">
-        <mat-error *ngIf="!selectedFile">
+        <mat-error class="img-erro" *ngIf="!selectedFile">
           A imagem é obrigatória.
         </mat-error>
       </div>

@@ -142,6 +142,8 @@ throw new Error('Method not implemented.');
 
       this.service.getProductByName(nome).subscribe((response: any)=>{
         this.processProductResponse(response)
+       },(error: any)=>{
+          this.dataSource = new MatTableDataSource<ProductElement>([]);
       });
 
     }
