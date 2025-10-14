@@ -2,10 +2,9 @@
   <h2 class="alinear">Lista de Produtos</h2>
   <mat-card-header>
     <div>
-      <mat-form-field hintLabel="buscar Produtos" appearance="fill">
+      <mat-form-field appearance="fill">
           <mat-label>Buscar Produto</mat-label>
-           <!-- <input matInput #input (keyup)="buscar(input.value)"> -->
-          <input matInput #input>
+           <input placeholder="digite no mínimo 3 caracteres" matInput #input (keyup)="buscar(input.value)">
       </mat-form-field>
     </div>
   </mat-card-header>

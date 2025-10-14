@@ -17,6 +17,7 @@ import { EnumModules } from '../../shared/enums/enum-modules';
 export class ProductComponent implements OnInit{
 
 
+
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
 
@@ -93,7 +94,7 @@ throw new Error('Method not implemented.');
     element.picture = 'data:image/jpeg;base64,' + element.picture;
     const dialogRef = this.dialog.open(NewProductComponent, {
      width: '400px',
-     height: '520px',
+     height: '530px',
     //  data: {
     //         id: element.id,
     //         name: element.name,
@@ -119,7 +120,7 @@ throw new Error('Method not implemented.');
 
   eliminar(element: ProductElement) {
     const dialogRef = this.dialog.open(ConfirmComponent, {
-      width: '360px',
+      width: '390px',
       data: {...element, module: EnumModules.PRODUCT}
       });
 
@@ -132,6 +133,17 @@ throw new Error('Method not implemented.');
         }
 
       });
+    }
+
+    buscar(nome: any) {
+      if(nome.length < 3 ){
+        return this.getProducts();
+      }
+
+      this.service.getProductByName(nome).subscribe((response: any)=>{
+        this.processProductResponse(response)
+      });
+
     }
   }
 
