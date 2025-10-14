@@ -32,4 +32,9 @@ export class ProductService {
     return this.http.delete(this.endpoint);
   }
 
+  getProductByName(nome: any) {
+    this.endpoint = `${this.base_url}/products/filter/${nome}`;
+    return this.http.get(this.endpoint);
+  }
+
 }
